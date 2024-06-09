@@ -1,20 +1,20 @@
 #import "@preview/tidy:0.3.0"
-#import "@preview/crudo:0.1.0"
+// #import "@preview/crudo:0.1.0"
 
 #import "template.typ": *
 
-#import "/src/lib.typ" as template
+#import "/src/lib.typ" as pre-plantuml
 
 #let package-meta = toml("/typst.toml").package
 #let date = none
 // #let date = datetime(year: ..., month: ..., day: ...)
 
 #show: project.with(
-  title: "Template",
+  title: "pre-plantuml",
   // subtitle: "...",
   authors: package-meta.authors.map(a => a.split("<").at(0).trim()),
   abstract: [
-    A template for typst packages
+    Extract PlantUML diagrams from Typst documents to be rendered into images.
   ],
   url: package-meta.repository,
   version: package-meta.version,
@@ -22,17 +22,15 @@
 )
 
 // the scope for evaluating expressions and documentation
-#let scope = (template: template)
+#let scope = (pre-plantuml: pre-plantuml)
 
 = Introduction
 
-This is a template for typst packages. It provides the #ref-fn("template.id()") function:
+This package provides two #link("https://typst.app/universe/package/prequery")[prequeries] for using PlantUML in Typst:
+- #ref-fn("plantuml-url()") provides the encoded diagram URL to preprocessors for downloading the diagram file;
+- #ref-fn("plantuml-source()") provides the diagram source code to preprocessors for generating the diagram image locally.
 
-#{
-  let lib = raw(block: true, lang: "typ", read("/src/lib.typ").trim())
-  lib = crudo.slice(lib, 4)
-  lib
-}
+See the Prequery library documentation for more general information on how this can be used.
 
 = Module reference
 
@@ -41,7 +39,7 @@ This is a template for typst packages. It provides the #ref-fn("template.id()") 
 #{
   let module = tidy.parse-module(
     read("/src/lib.typ"),
-    label-prefix: "template.",
+    // label-prefix: "pre-plantuml.",
     scope: scope,
   )
   tidy.show-module(
